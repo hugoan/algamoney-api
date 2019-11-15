@@ -43,8 +43,8 @@ public class PessoaResource {
 	}
 
 	@GetMapping("/{codigo}")
-	public Pessoa buscarPeloCodigo(@PathVariable Long codigo) {
-		return pessoaRepository.findOne(codigo);
+	public  ResponseEntity<Pessoa> buscarPeloCodigo(@PathVariable Long codigo) {
+		return ResponseEntity.status(HttpStatus.OK).body(pessoaService.buscar(codigo));
 	}
 
 	@PostMapping
@@ -57,7 +57,7 @@ public class PessoaResource {
 	@DeleteMapping("/{codigo}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long codigo) {
-		pessoaRepository.delete(codigo);
+		pessoaService.delete(codigo);
 	}
 
 	@PutMapping("/{codigo}")

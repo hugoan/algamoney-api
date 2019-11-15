@@ -2,7 +2,6 @@ package com.example.algamoney.api.resource;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -38,9 +37,6 @@ import com.example.algamoney.api.service.exception.PessoaInexistenteOuInativaExc
 public class LancamentoResource {
 
 	@Autowired
-	private Lancamento lancamento;
-	
-	@Autowired
 	private LancamentoRepository lancamentoRepository;
 
 	@Autowired
@@ -59,9 +55,7 @@ public class LancamentoResource {
 
 	@GetMapping("/{codigo}")
 	public ResponseEntity<Lancamento> buscarPeloCodigo(@PathVariable Long codigo) {
-		Optional<Lancamento> lancamentoPesquisado = lancamentoRepository.findById(codigo);
-		this.lancamento = lancamentoPesquisado;
-		return lancamento != null ? ResponseEntity.ok(this.lancamento) : ResponseEntity.notFound().build();
+		return ResponseEntity.status(HttpStatus.OK).body(lancamentoService.buscar(codigo));
 	}
 
 	@PostMapping
@@ -74,7 +68,7 @@ public class LancamentoResource {
 	@DeleteMapping("/{codigo}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long codigo) {
-		lancamentoRepository.delete(codigo);
+		lancamentoService.delete(codigo);
 	}
 
 	@ExceptionHandler({ PessoaInexistenteOuInativaException.class })
